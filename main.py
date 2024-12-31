@@ -1,4 +1,5 @@
 import sys
+import logging
 from pathlib import Path
 from utils import sync_folders
 
@@ -28,6 +29,9 @@ def main():
 
     # Synchronize folders
     sync_folders(src, dest)
+    logging.info("Finished syncing successfully")
+
+    logging.shutdown()
     print("Synchronization completed successfully.")
 
 if __name__ == "__main__":
