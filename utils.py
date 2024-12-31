@@ -40,6 +40,11 @@ def sync_folders(src, dest):
 
     # Iterate through all items in source folder
     for item in src_items:
+
+        # Skip ".DS_Store" file
+        if item == ".DS_Store":
+            continue
+
         src_path = Path(src) / item
         dest_path = Path(dest) / item
 
@@ -63,6 +68,11 @@ def sync_folders(src, dest):
     # Iterate through items in destination folder
     # and delete those that do not exist in source folder
     for item in dest_items:
+
+        # Skip ".DS_Store" file
+        if item == ".DS_Store":
+            continue
+
         src_path = Path(src) / item
         dest_path = Path(dest) / item
 
