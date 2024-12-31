@@ -13,12 +13,14 @@ def main():
     src = Path(sys.argv[1]).expanduser()
     dest = Path(sys.argv[2]).expanduser()
 
-    # Validate paths
+    # Validate paths and Create destination folder if it doesn't exist
     if not src.exists() or not src.is_dir():
         print(f"Source folder {src} does not exist")
         sys.exit(1)
-    if not dest.exists() or not dest.is_dir():
-        print(f"Destination folder {dest} does not exist")
+    if not dest.exists():
+        dest.mkdir(exist_ok=True)
+    elif not dest.is_dir():
+        print(f"Path {dest} already exists but it is not a directory")
         sys.exit(1)
 
     # Synchronize folders
