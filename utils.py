@@ -1,0 +1,44 @@
+import os
+from pathlib import Path
+import shutil
+
+# Function that handles the synchronization of source and destination folders
+def sync_folders(src, dest):
+
+    # List all items in source folder
+    src_items = os.listdir(src)
+
+    # List all items in destination folder
+    dest_items = os.listdir(dest)
+
+    # Iterate through all items in source folder
+    for item in src_items:
+        src_path = Path(src) / item
+        dest_path = Path(dest) / item
+
+        # If the item is a directory
+        if src_path.is_dir():
+            # If it doesn't exist, copy the directory
+            if not dest_path.exists():
+                shutil.copytree(src_path, dest_path)
+            else:
+                # Recursively synchronize the directory
+                sync_folders(src_path, dest_path)
+        # If the item is a file
+        else:
+            # Copy file if it doesn't exist or is newer in the source
+            if (not dest_path.exists() or
+                src_path.stat().st_mtime > dest_path.stat().st_mtime):
+                shutil.copy2(src_path, dest_path)
+
+    # Iterate through items in destination folder
+    # and delete them if they do not exist in source folder
+    for item in dest_items:
+        src_path = Path(src) / item
+        dest_path = Path(dest) / item
+
+        if not src_path.exists():
+            if dest_path.is_dir():
+                shutil.rmtree(dest_path)
+            else:
+                dest_path.unlink()
