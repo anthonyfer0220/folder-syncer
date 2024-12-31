@@ -1,7 +1,7 @@
 import os
-from pathlib import Path
 import shutil
 import logging
+from pathlib import Path
 
 # Set up path for log files
 logs_path = Path(__file__).parent / "logs"
@@ -17,8 +17,20 @@ logging.basicConfig(
     level=logging.INFO
     )
 
-# Function that handles the synchronization of source and destination folders
 def sync_folders(src, dest):
+    """
+    Synchronize source folder with destination folder
+
+    Copies new or updated files and directories from source to destination
+    Remove files and directories in the destination folder that do not exist in the source
+
+    Args:
+        src (Path): Source folder
+        dest (Path): Destination folder
+
+    Returns:
+        None
+    """
 
     # List all items in source folder
     src_items = os.listdir(src)
