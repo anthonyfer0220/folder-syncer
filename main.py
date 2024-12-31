@@ -10,8 +10,8 @@ def main():
         print("Example: python3 main.py ~/source_folder ~/destination_folder")
         sys.exit(1)
 
-    src = Path(sys.argv[1])
-    dest = Path(sys.argv[2])
+    src = Path(sys.argv[1]).expanduser()
+    dest = Path(sys.argv[2]).expanduser()
 
     # Validate paths
     if not src.exists() or not src.is_dir():
