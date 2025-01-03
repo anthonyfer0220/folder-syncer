@@ -17,16 +17,21 @@ logging.basicConfig(
     level=logging.INFO
     )
 
-def sync_folders(src, dest):
+def sync_folders(src, dest, skipping):
     """
     Synchronize source folder with destination folder
 
     Copies new or updated files and directories from source to destination
     Remove files and directories in the destination folder that do not exist in the source
 
+    Extra:
+    Skip specific files and/or directories from the source folder
+    By default, ".DS_Store" is skipped
+
     Args:
         src (Path): Source folder
         dest (Path): Destination folder
+        skipping (list): List of files and/or directories to skip
 
     Returns:
         None
@@ -41,8 +46,8 @@ def sync_folders(src, dest):
     # Iterate through all items in source folder
     for item in src_items:
 
-        # Skip ".DS_Store" file
-        if item == ".DS_Store":
+        # Skip specified files and/or folders
+        if item in skipping:
             continue
 
         src_path = Path(src) / item
@@ -56,7 +61,7 @@ def sync_folders(src, dest):
                 logging.info(f"Copied directory: {src_path} -> {dest_path}")
             else:
                 # Recursively synchronize the directory
-                sync_folders(src_path, dest_path)
+                sync_folders(src_path, dest_path, skipping)
         # If the item is a file
         else:
             # Copy file if it doesn't exist or is newer in the source
@@ -69,14 +74,10 @@ def sync_folders(src, dest):
     # and delete those that do not exist in source folder
     for item in dest_items:
 
-        # Skip ".DS_Store" file
-        if item == ".DS_Store":
-            continue
-
         src_path = Path(src) / item
         dest_path = Path(dest) / item
 
-        if not src_path.exists():
+        if item in skipping or not src_path.exists():
             if dest_path.is_dir():
                 shutil.rmtree(dest_path)
                 logging.info(f"Removed directory: {dest_path}")
