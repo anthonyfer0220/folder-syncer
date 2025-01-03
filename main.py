@@ -16,8 +16,8 @@ def main():
     src = Path(sys.argv[1]).expanduser()
     dest = Path(sys.argv[2]).expanduser()
 
-    # Skip ".DS_Store" by default
-    skipping = [".DS_Store"]
+    # List of terms to be skipped
+    skipping = []
 
     # If "skip" flag is used, add following elements to skipping list
     if len(sys.argv) > 3 and (sys.argv[3] == "-s" or sys.argv[3] == "--skip"):

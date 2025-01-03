@@ -26,7 +26,6 @@ def sync_folders(src, dest, skipping):
 
     Extra:
     Skip specific files and/or directories from the source folder
-    By default, ".DS_Store" is skipped
 
     Args:
         src (Path): Source folder
