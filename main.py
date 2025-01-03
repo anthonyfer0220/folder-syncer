@@ -8,8 +8,8 @@ from utils import sync_folders
 def main():
     # Validate command-line arguments
     if len(sys.argv) != 3:
-        print("Usage: python3 main.py path/to/source path/to/destination")
-        print("Example: python3 main.py ~/source_folder ~/destination_folder")
+        print("Usage: python3 main.py \"path/to/source\" \"path/to/destination\"")
+        print("Example: python3 main.py \"~/source_folder\" \"~/destination_folder\"")
         sys.exit(1)
 
     # Set up paths for source and destination folders
