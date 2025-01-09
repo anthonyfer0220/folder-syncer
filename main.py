@@ -34,12 +34,16 @@ def main():
         print(f"Path {dest} already exists but it is not a directory")
         sys.exit(1)
 
+    # Inform user and log beginning of synchronization process
+    print("Starting synchronization.")
+    logging.info("Starting synchronization")
+
     # Synchronize folders
     sync_folders(src, dest, skipping)
-    logging.info("Finished syncing successfully")
 
-    logging.shutdown()
-    print("Synchronization completed successfully.")
+    # Inform user and log ending of synchronization process
+    logging.info("Finished syncing successfully")
+    print("Finished syncing successfully.")
 
 if __name__ == "__main__":
     main()
