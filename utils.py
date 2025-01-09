@@ -21,8 +21,8 @@ def sync_folders(src, dest, skipping):
     """
     Synchronize source folder with destination folder
 
-    Copies new or updated files and directories from source to destination
-    Delete files and directories in the destination folder that do not exist in the source
+    Copies new or updated files and directories from source to destination via copy() function
+    Delete files and directories in the destination folder that do not exist in the source via delete() function
 
     Extra:
     Skip specific files and/or directories from the source folder
@@ -52,22 +52,8 @@ def sync_folders(src, dest, skipping):
         src_path = Path(src) / item
         dest_path = Path(dest) / item
 
-        # If the item is a directory
-        if src_path.is_dir():
-            # If it doesn't exist, copy the directory
-            if not dest_path.exists():
-                shutil.copytree(src_path, dest_path)
-                logging.info(f"Copied directory: {src_path} -> {dest_path}")
-            else:
-                # Recursively synchronize the directory
-                sync_folders(src_path, dest_path, skipping)
-        # If the item is a file
-        else:
-            # Copy file if it doesn't exist or is newer in the source
-            if (not dest_path.exists() or
-                src_path.stat().st_mtime > dest_path.stat().st_mtime):
-                shutil.copy2(src_path, dest_path)
-                logging.info(f"Copied file: {src_path} -> {dest_path}")
+        # Copy file or directory
+        copy(src_path, dest_path, skipping)
 
     # Iterate through items in destination folder
     # and delete those not in source folder
@@ -79,7 +65,43 @@ def sync_folders(src, dest, skipping):
         if item in skipping or not src_path.exists():
             delete(dest_path) # Delete file or directory
 
+def copy(src, dest, skipping):
+    """
+    Copy files or directories
 
+    Handles copying of files and directories from the source folder to destination folder
+    Ensures directories are recursively copied if they exist
+
+    Args:
+        src (Path): The file or directory to be copied
+        dest (Path): The file or directory where it should be copied
+        skipping (list): List of files and/or directories to skip
+
+    Returns:
+        None
+    """
+
+    if src.is_dir():
+        item_type = "directory"
+    else:
+        item_type = "file"
+
+    # If the current item is a directory
+    if item_type == "directory":
+        # If it doesn't exist, copy the directory
+        if not dest.exists():
+            shutil.copytree(src, dest)
+            logging.info(f"Copied {item_type}: {src} -> {dest}")
+        else:
+            # Recursively synchronize the directory
+            sync_folders(src, dest, skipping)
+    # If the item is a file
+    else:
+        # Copy file if it doesn't exist or is newer in the source
+        if (not dest.exists() or
+                src.stat().st_mtime > dest.stat().st_mtime):
+            shutil.copy2(src, dest)
+            logging.info(f"Copied {item_type}: {src} -> {dest}")
 
 def delete(dest):
     """
