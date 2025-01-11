@@ -17,7 +17,7 @@ Perfectly suited for backups, file replication, or keeping directories organized
 
 This project requires [Python 3](https://www.python.org/).
 
-1. Verify that Python 3 is installed on your system:
+1. Verify Python 3 is installed on your system:
     ```sh
     python3 --version
     ```
