@@ -24,6 +24,10 @@ def main():
         skipping.extend(sys.argv[4:])
 
     # Validate paths and Create destination folder if it doesn't exist
+    if src == dest:
+        print(f"Source and Destination are the same")
+        sys.exit(1)
+
     if not src.exists() or not src.is_dir():
         print(f"Source folder {src} does not exist")
         sys.exit(1)

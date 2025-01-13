@@ -16,4 +16,4 @@
 __pycache__/
 
 # Ignore logs
-logs/
+folder_syncer/logs/

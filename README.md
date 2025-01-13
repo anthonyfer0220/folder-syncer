@@ -36,7 +36,7 @@ This project requires [Python 3](https://www.python.org/).
 
 1. Navigate to the project directory:
     ```sh
-    cd folder-syncer
+    cd folder-syncer/folder_syncer
     ```
    
 2. Run the script:
@@ -78,12 +78,12 @@ python3 main.py "~/source_folder" "~/destination_folder" --skip test_file.py tes
 ### Notes
 
 - Ensure both source and destination paths are accessible and writable.
-- Synchronization logs are automatically stored in the `logs/` directory, which is created if it does not already exist.
+- Synchronization logs are automatically stored in the `folder_syncer/logs/` directory, which is created if it does not already exist.
 - Suggestion: Consider creating shell functions for frequently synchronized folders:
 
 ```sh
 sync_folder_1() {
-    cd "$HOME/Developer/folder-syncer" || return
+    cd "$HOME/Developer/folder-syncer/folder_syncer" || return
     python3 main.py "~/source_folder" "~/destination_folder" -s test_file.py test_folder
 }
 ```
