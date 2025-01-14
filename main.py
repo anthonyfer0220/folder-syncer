@@ -33,7 +33,10 @@ def main():
         sys.exit(1)
 
     if not dest.exists():
-        dest.mkdir(exist_ok=True)
+        try:
+            dest.mkdir(exist_ok=True)
+        except Exception as e:
+            logging.error(f"Failed to create destination folder {dest}. Error: {e}")
     elif not dest.is_dir():
         print(f"Path {dest} already exists but it is not a directory")
         sys.exit(1)
@@ -43,7 +46,10 @@ def main():
     logging.info("Starting synchronization")
 
     # Synchronize folders
-    sync_folders(src, dest, skipping)
+    try:
+        sync_folders(src, dest, skipping)
+    except Exception as e:
+        logging.error(f"Failed to sync {src} to {dest}. Error: {e}")
 
     # Inform user and log ending of synchronization process
     logging.info("Finished syncing successfully")

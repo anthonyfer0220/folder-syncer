@@ -36,24 +36,32 @@ def sync_folders(src, dest, skipping):
         None
     """
 
-    # List all items in source folder
-    src_items = os.listdir(src)
+    try:
+        # List all items in source folder
+        src_items = os.listdir(src)
 
-    # List all items in destination folder
-    dest_items = os.listdir(dest)
+        # List all items in destination folder
+        dest_items = os.listdir(dest)
+    except Exception as e:
+        logging.error(f"Failed to access directories. Error: {e}")
+        return
 
     # Iterate through all items in source folder
     for item in src_items:
 
         # Skip specified files and/or folders
         if item in skipping:
+            logging.info(f"Skipping {item}")
             continue
 
         src_path = Path(src) / item
         dest_path = Path(dest) / item
 
         # Copy file or directory
-        copy(src_path, dest_path, skipping)
+        try:
+            copy(src_path, dest_path, skipping)
+        except Exception as e:
+            logging.error(f"Failed to copy {item}. Error: {e}")
 
     # Iterate through items in destination folder
     # and delete those not in source folder
@@ -63,7 +71,10 @@ def sync_folders(src, dest, skipping):
         dest_path = Path(dest) / item
 
         if item in skipping or not src_path.exists():
-            delete(dest_path) # Delete file or directory
+            try:
+                delete(dest_path) # Delete file or directory
+            except Exception as e:
+                logging.error(f"Failed to delete {item}. Error: {e}")
 
 def copy(src, dest, skipping):
     """
@@ -86,22 +97,25 @@ def copy(src, dest, skipping):
     else:
         item_type = "file"
 
-    # If the current item is a directory
-    if item_type == "directory":
-        # If it doesn't exist, copy the directory
-        if not dest.exists():
-            shutil.copytree(src, dest)
-            logging.info(f"Copied {item_type}: {src} -> {dest}")
+    try:
+        # If the current item is a directory
+        if item_type == "directory":
+            # If it doesn't exist, copy the directory
+            if not dest.exists():
+                shutil.copytree(src, dest)
+                logging.info(f"Copied {item_type}: {src} -> {dest}")
+            else:
+                # Recursively synchronize the directory
+                sync_folders(src, dest, skipping)
+        # If the item is a file
         else:
-            # Recursively synchronize the directory
-            sync_folders(src, dest, skipping)
-    # If the item is a file
-    else:
-        # Copy file if it doesn't exist or is newer in the source
-        if (not dest.exists() or
-                src.stat().st_mtime > dest.stat().st_mtime):
-            shutil.copy2(src, dest)
-            logging.info(f"Copied {item_type}: {src} -> {dest}")
+            # Copy file if it doesn't exist or is newer in the source
+            if (not dest.exists() or
+                    src.stat().st_mtime > dest.stat().st_mtime):
+                shutil.copy2(src, dest)
+                logging.info(f"Copied {item_type}: {src} -> {dest}")
+    except Exception as e:
+        logging.error(f"Failed to copy {item_type}: {src}. Error: {e}")
 
 def delete(dest):
     """
