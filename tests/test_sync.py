@@ -1,38 +1,4 @@
-import pytest
 from folder_syncer.utils import sync_folders
-
-
-@pytest.fixture
-def temp_src(tmp_path):
-    """
-    Set up temporary source directory for testing
-    """
-
-    # Create source directory
-    src = tmp_path / "source"
-    src.mkdir()
-
-    # Add files to source directory
-    (src / "foo.txt").write_text("Foo")
-    (src / "bar.txt").write_text("Bar")
-    (src / "subdir").mkdir()
-    (src / "subdir" / "sub.txt").write_text("Sub")
-
-    return src
-
-
-@pytest.fixture
-def temp_dest(tmp_path):
-    """
-    Set up temporary destination directory for testing
-    """
-
-    # Create destination directory
-    dest = tmp_path / "destination"
-    dest.mkdir()
-
-    return dest
-
 
 def test_copying_new_files(temp_src, temp_dest):
     """
@@ -54,7 +20,7 @@ def test_copying_new_files(temp_src, temp_dest):
     assert (temp_dest / "subdir" / "sub.txt").read_text() == "Sub", "sub.txt content should match"
 
 
-def test_deleting_files_in_destination(temp_src, temp_dest, monkeypatch):
+def test_deleting_files_in_dest(temp_src, temp_dest, monkeypatch):
     """
     Test deleting files in destination that do not exist in source
     """
@@ -73,7 +39,7 @@ def test_deleting_files_in_destination(temp_src, temp_dest, monkeypatch):
     assert not (temp_dest / "extra.txt").exists(), "extra.txt file should be removed from destination"
 
 
-def test_updating_files_in_destination(temp_src, temp_dest):
+def test_updating_files_in_dest(temp_src, temp_dest):
     """
     Test updating files in destination that are newer in source
     """
