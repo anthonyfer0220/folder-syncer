@@ -1,5 +1,5 @@
 import pytest
-from folder_syncer.main import main
+from main import main
 
 
 @pytest.fixture
@@ -42,7 +42,7 @@ def test_less_than_required_arguments(temp_src, monkeypatch):
     print(f"Fewer than 3 arguments passed")
 
     # Simulate fewer than 3 arguments passed
-    monkeypatch.setattr("folder_syncer.main.sys.argv", ["main.py", f"{temp_src}"])
+    monkeypatch.setattr("main.sys.argv", ["main.py", f"{temp_src}"])
 
     # Expect program to terminate with SystemExit
     with pytest.raises(SystemExit) as excinfo:
@@ -58,7 +58,7 @@ def test_source_not_exist(temp_src, temp_dest, monkeypatch):
     """
 
     # Simulate passing a non-existent source directory
-    monkeypatch.setattr("folder_syncer.main.sys.argv", ["main.py", f"{temp_src}/not_an_existing_dir", f"{temp_dest}"])
+    monkeypatch.setattr("main.sys.argv", ["main.py", f"{temp_src}/not_an_existing_dir", f"{temp_dest}"])
 
     # Expect program to terminate with SystemExit
     with pytest.raises(SystemExit) as excinfo:
@@ -77,7 +77,7 @@ def test_dest_not_dir(temp_src, temp_dest, monkeypatch):
     (temp_dest / "dest_not_a_dir").touch()
 
     # Simulate passing a destination as a file
-    monkeypatch.setattr("folder_syncer.main.sys.argv", ["main.py", f"{temp_src}", f"{temp_dest}/dest_not_a_dir"])
+    monkeypatch.setattr("main.sys.argv", ["main.py", f"{temp_src}", f"{temp_dest}/dest_not_a_dir"])
 
     # Expect program to terminate with SystemExit
     with pytest.raises(SystemExit) as excinfo:
@@ -93,7 +93,7 @@ def test_source_and_dest_same(temp_src, monkeypatch):
     """
 
     # Simulate passing the same path for source and destination
-    monkeypatch.setattr("folder_syncer.main.sys.argv", ["main.py", f"{temp_src}", f"{temp_src}"])
+    monkeypatch.setattr("main.sys.argv", ["main.py", f"{temp_src}", f"{temp_src}"])
 
     # Expect program to terminate with SystemExit
     with pytest.raises(SystemExit) as excinfo:

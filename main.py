@@ -1,7 +1,7 @@
 import sys
 import logging
 from pathlib import Path
-from .utils import sync_folders
+from folder_syncer.utils import sync_folders
 
 # A script to synchronize files between a source and a destination folder.
 
