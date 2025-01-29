@@ -36,7 +36,7 @@ This project requires [Python 3](https://www.python.org/).
 
 1. Navigate to the project directory:
     ```sh
-    cd folder-syncer/folder_syncer
+    cd folder-syncer
     ```
    
 2. Run the script:
@@ -83,7 +83,7 @@ python3 main.py "~/source_folder" "~/destination_folder" --skip test_file.py tes
 
 ```sh
 sync_folder_1() {
-    cd "$HOME/Developer/folder-syncer/folder_syncer" || return
+    cd "$HOME/Developer/folder-syncer" || return
     python3 main.py "~/source_folder" "~/destination_folder" -s test_file.py test_folder
 }
 ```
