@@ -49,6 +49,10 @@ def sync_folders(src, dest, skipping):
     # Iterate through all items in source folder
     for item in src_items:
 
+        # Ignore .DS_Store
+        if item == ".DS_Store":
+            continue
+
         # Skip specified files and/or folders
         if item in skipping:
             logging.info(f"Skipping {item}")
@@ -66,6 +70,10 @@ def sync_folders(src, dest, skipping):
     # Iterate through items in destination folder
     # and delete those not in source folder
     for item in dest_items:
+
+        # Ignore .DS_Store
+        if item == ".DS_Store":
+            continue
 
         src_path = Path(src) / item
         dest_path = Path(dest) / item
